@@ -1,0 +1,16 @@
+# job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  parallelism: 3 # 指的是并发执行最大数量
+  completions: 5 # 指的是会创建 Pod 的数量
+  template:
+    spec:
+      # restartPolicy = "OnFailure 的含义和 Pod 生命周期相关，Pod 中的容器可能因为退出时返回值非零， 或者容器因为超出内存约束而被杀死等等。 如果发生这类事件，并且 .spec.template.spec.restartPolicy = "OnFailure"， Pod 则继续留在当前节点，但容器会被重新运行。因此，你的程序需要能够处理在本地被重启的情况，或者要设置 .spec.template.spec.restartPolicy = "Never"
+      restartPolicy: Never
+      containers:
+        - name: echo
+          image: busybox
+          command: [ls]
